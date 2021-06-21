@@ -3,6 +3,8 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
+# https://tutorialwithproject.com/flask-rest-api-crud-operations/
+
 # Init app
 app = Flask(__name__)
 
@@ -54,6 +56,11 @@ def get_all_users():
     users = Users.query.all()
     result = users_schema.dump(users)
     return jsonify(result)
+
+@app.route('/api/user/<int:id>', methods=['GET'])
+def get_user_by_id(id):
+    user = Users.query.get(id)
+    return jsonify(user);
 
 # Run Server
 if __name__ == '__main__':
