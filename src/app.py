@@ -27,7 +27,8 @@ class Users(db.Model):
     country = db.Column(db.String)
     is_active = db.Column(db.Boolean)
     
-    def __init__(self, auth_id, first_name, last_name, dob, bio, city, state, country, is_active):
+    def __init__(self, id, auth_id, first_name, last_name, dob, bio, city, state, country, is_active):
+        self.id = id
         self.auth_id = auth_id
         self.first_name = first_name
         self.last_name = last_name
@@ -60,7 +61,8 @@ def get_all_users():
 @app.route('/api/user/<int:id>', methods=['GET'])
 def get_user_by_id(id):
     user = Users.query.get(id)
-    return jsonify(user);
+    result = user_schema.dump(user)
+    return jsonify(result);
 
 # Run Server
 if __name__ == '__main__':
