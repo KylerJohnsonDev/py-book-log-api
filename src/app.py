@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from datetime import date
 
 # https://tutorialwithproject.com/flask-rest-api-crud-operations/
 
@@ -28,8 +29,7 @@ class User(db.Model):
     country = db.Column(db.String)
     is_active = db.Column(db.Boolean)
     
-    def __init__(self, id, auth_id, first_name, last_name, dob, bio, city, state, country, is_active):
-        self.id = id
+    def __init__(self, auth_id, first_name, last_name, dob, bio, city, state, country, is_active):
         self.auth_id = auth_id
         self.first_name = first_name
         self.last_name = last_name
@@ -67,7 +67,19 @@ def get_user_by_id(id):
 
 @app.route('/api/user', methods=['POST'])
 def add_user():
-    user = User
+    auth_id = request.json['auth_id']
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
+    dob = date.fromisoformat(request.json['dob'])
+    bio = request.json['bio']
+    city = request.json['city']
+    state = request.json['state']
+    country = request.json['country']
+    
+    new_user = User(auth_id, first_name, last_name, dob, bio, city, state, country, True)
+    db.session.add(new_user)
+    db.session.commit()
+    return user_schema.jsonify(new_user)
 
 # Run Server
 if __name__ == '__main__':
