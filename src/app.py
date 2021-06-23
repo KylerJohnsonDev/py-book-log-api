@@ -15,7 +15,8 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 # models
-class Users(db.Model):
+class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     auth_id = db.Column(db.String)
     first_name = db.Column(db.String)
@@ -54,15 +55,19 @@ def get_hello_world():
 
 @app.route('/api/users', methods=['GET'])
 def get_all_users():
-    users = Users.query.all()
+    users = User.query.all()
     result = users_schema.dump(users)
     return jsonify(result)
 
 @app.route('/api/user/<int:id>', methods=['GET'])
 def get_user_by_id(id):
-    user = Users.query.get(id)
+    user = User.query.get(id)
     result = user_schema.dump(user)
     return jsonify(result);
+
+@app.route('/api/user', methods=['POST'])
+def add_user():
+    user = User
 
 # Run Server
 if __name__ == '__main__':
