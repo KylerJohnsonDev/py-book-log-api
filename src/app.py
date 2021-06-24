@@ -81,6 +81,27 @@ def add_user():
     db.session.commit()
     return user_schema.jsonify(new_user)
 
+@app.route('/api/user/<int:id>', methods=['PUT'])
+def update_user(id):
+    user = User.query.get(id)
+    if 'first_name' in request.json:
+        user.first_name = request.json['first_name']
+    if 'last_name' in request.json:
+        user.last_name = request.json['last_name'] or user.last_name
+    if 'bio' in request.json:
+        user.bio = request.json['bio'] or user.bio
+    if 'city' in request.json:
+        user.city = request.json['city'] or user.city
+    if 'state' in request.json:
+        user.state = request.json['state'] or user.state
+    if 'country' in request.json:
+        user.country = request.json['country'] or user.country
+    if 'is_active' in request.json:
+        user.is_active = request.json['is_active'] or user.is_active
+    
+    db.session.commit()
+    return user_schema.jsonify(user)
+
 # Run Server
 if __name__ == '__main__':
     app.run(debug=True)
