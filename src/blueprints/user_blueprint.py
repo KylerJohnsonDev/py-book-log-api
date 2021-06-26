@@ -18,6 +18,13 @@ def get_user_by_id(id):
     result = user_schema.dump(user)
     return jsonify(result);
 
+@user_blueprint.route('/api/user/email/<string:email>', methods=['GET'])
+def get_user_by_email(email):
+    filter_by = '%{}%'.format(email)
+    user = User.query.filter(User.email.like(filter_by)).first()
+    result = user_schema.dump(user)
+    return jsonify(result)
+
 @user_blueprint.route('/api/user', methods=['POST'])
 def add_user():
     auth_id = request.json['auth_id']
