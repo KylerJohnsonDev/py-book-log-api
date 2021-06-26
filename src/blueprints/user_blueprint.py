@@ -21,6 +21,7 @@ def get_user_by_id(id):
 @user_blueprint.route('/api/user', methods=['POST'])
 def add_user():
     auth_id = request.json['auth_id']
+    email = request.json['email']
     first_name = request.json['first_name']
     last_name = request.json['last_name']
     dob = date.fromisoformat(request.json['dob'])
@@ -28,8 +29,9 @@ def add_user():
     city = request.json['city']
     state = request.json['state']
     country = request.json['country']
+    is_profile_public = request.json['is_profile_public']
     
-    new_user = User(auth_id, first_name, last_name, dob, bio, city, state, country, True)
+    new_user = User(auth_id, email, first_name, last_name, dob, bio, city, state, country, True, is_profile_public)
     db.session.add(new_user)
     db.session.commit()
     return user_schema.jsonify(new_user)
@@ -37,6 +39,8 @@ def add_user():
 @user_blueprint.route('/api/user/<int:id>', methods=['PUT'])
 def update_user(id):
     user = User.query.get(id)
+    if 'email' in request.json:
+        user.email = request.json['email']
     if 'first_name' in request.json:
         user.first_name = request.json['first_name']
     if 'last_name' in request.json:
@@ -51,6 +55,8 @@ def update_user(id):
         user.country = request.json['country'] or user.country
     if 'is_active' in request.json:
         user.is_active = request.json['is_active'] or user.is_active
+    if 'is_profile_public' in request.json:
+        user.is_profile_public = request.json['is_profile_public']
     
     db.session.commit()
     return user_schema.jsonify(user)
