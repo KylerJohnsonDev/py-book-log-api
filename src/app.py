@@ -1,8 +1,9 @@
 #Import required packages
 from flask import Flask, request, jsonify
 from datetime import date
-from extensions import db, ma
+from extensions import db
 from models.user import User
+from schemas.user_schema import user_schema, users_schema
 
 # https://tutorialwithproject.com/flask-rest-api-crud-operations/
 
@@ -13,14 +14,6 @@ app.config['SQLALCHEMY_DATABASE_URI']='sqlite:////home/kylerjohnson/databases/bo
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
 
 db.init_app(app)
-        
-class UserSchema(ma.Schema):
-    class Meta:
-        fields = ('id', 'auth_id', 'first_name', 'last_name', 'dob', 'bio', 'city', 'state', 'country', 'is_active')
-        
-
-user_schema = UserSchema()
-users_schema = UserSchema(many=True)
     
 #Create a Hello-World route
 @app.route('/health', methods=['GET'])
