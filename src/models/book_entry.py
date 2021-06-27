@@ -13,5 +13,11 @@ class Book_Entry(db.Model):
     notes = db.Column(db.String)
     book = relationship('Book', back_populates="book_entries", uselist=False)
     
+    def __init__(self, user_id, has_read, notes, book_id):
+        self.user_id = user_id
+        self.has_read = has_read
+        self.notes = notes
+        self.book_id = book_id
+    
     
     

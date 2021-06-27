@@ -2,7 +2,7 @@ from extensions import ma
 
 class Book_Schema(ma.Schema):
     class Meta:
-        fields = ('id', 'title', 'author', 'genre_id', 'genre')
+        fields = ('id', 'title', 'author', 'genre_id', 'genres')
         
 
 book_schema = Book_Schema()

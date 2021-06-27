@@ -14,8 +14,7 @@ class Book(db.Model):
     book_entry_id = db.Column(db.Integer, ForeignKey('book_entries.id'))
     book_entries = relationship('Book_Entry', back_populates='book', uselist=False)
     
-    def __init__(self, title, author, genre_id, book_entry_id):
+    def __init__(self, title, author, genre_id):
         self.title = title
         self.author = author
         self.genre_id = genre_id
-        self.book_entry_id = book_entry_id
