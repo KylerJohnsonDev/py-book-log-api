@@ -2,6 +2,7 @@
 from flask import Flask, jsonify
 from extensions import db
 from blueprints.user_blueprint import user_blueprint
+from blueprints.book_entries_blueprint import book_entries_blueprint
 
 # https://tutorialwithproject.com/flask-rest-api-crud-operations/
 
@@ -19,6 +20,7 @@ def get_hello_world():
     return jsonify({'status': 'Healthy'})
 
 app.register_blueprint(user_blueprint)
+app.register_blueprint(book_entries_blueprint)
 
 # Run Server
 if __name__ == '__main__':
